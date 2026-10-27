@@ -1,0 +1,9 @@
+.git
+.github
+node_modules/
+test-results/
+coverage/
+dist/
+.env
+.env.*
+!.env.example
