@@ -7,3 +7,9 @@ dist/
 .env
 .env.*
 !.env.example
+
+.git/
+Dockerfile*
+.dockerignore
+*.log*
+.env*
