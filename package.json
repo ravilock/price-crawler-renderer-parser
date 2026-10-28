@@ -1,1 +1,19 @@
-{"name":"price-renderer-parser","private":true,"type":"module","scripts":{"start":"node src/index.js","test":"node --test --test-reporter=spec","lint":"eslint src","build":"node --check src/index.js"},"dependencies":{"amqplib":"^0.10.5","playwright":"^1.51.0"},"devDependencies":{"eslint":"^9.0.0","@eslint/js":"^9.0.0"}}
+{
+  "name": "price-renderer-parser",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --experimental-strip-types --test --test-reporter=spec test/*.test.js tests/*.test.ts",
+    "lint": "eslint src",
+    "build": "node --check src/index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.5",
+    "playwright": "^1.51.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "@eslint/js": "^9.0.0"
+  }
+}
