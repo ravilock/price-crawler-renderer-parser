@@ -129,6 +129,13 @@ automatic rollback or forced version is permitted.
 
 ## Delivery status
 
+`/healthz` reports process liveness and `/readyz` reports the authenticated
+RabbitMQ transport and queue setup. Startup waits up to
+`READINESS_TIMEOUT_SECONDS` (default 120); after a disconnect the worker retries
+with exponential delays bounded by `RECONNECT_INITIAL_DELAY_SECONDS` (default 1)
+and `RECONNECT_MAX_DELAY_SECONDS` (default 30). Transport readiness does not mean
+that the future extraction handler or a complete rendering workflow is available.
+
 Infrastructure readiness is gated by authenticated PostgreSQL `SELECT 1`, RabbitMQ health,
 and Keycloak realm discovery with the expected issuer where selected. Application
 connection handling, migration gating and dependency-loss readiness are delivered by
