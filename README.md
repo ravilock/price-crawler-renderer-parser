@@ -79,8 +79,10 @@ make app.up WORKFLOW_PROFILES="rendering"
 # Or docker compose --profile rendering --profile app up --build -d
 ```
 
-The controlled mock-source image/profile is delivered separately by T120 after its real
-publication; no static fixture or invented image tag is substituted here. Dependency-only
+The controlled mock-source profile uses the public `v0.1.0-rc.1` image. Set a nonempty
+`MOCK_CONTROL_TOKEN` in untracked local configuration; controls bind only to loopback.
+Source origin inside Compose is `http://mock-store:8080`. Overrides persist in the
+project-scoped `mock-store-data` volume, which normal down retains. Dependency-only
 startup is distinct from a working collection, browser, monitoring or demo workflow.
 
 ## Image inventory and compatibility
