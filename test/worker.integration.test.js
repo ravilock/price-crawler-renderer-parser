@@ -24,7 +24,7 @@ test('renderer uses broker fetch and publishes a bounded page result', { skip: !
     fixture.sendToQueue('render.page.requested.v1', Buffer.from(JSON.stringify(job)));
     let output;
     for (let i = 0; i < 150; i++) { const message = await fixture.get('page.parsed.v1', { noAck: true }); if (message) { output = JSON.parse(message.content.toString('utf8')); break; } await new Promise(resolve => setTimeout(resolve, 100)); }
-    assert.ok(output); assert.equal(output.organization_id, org); assert.equal(output.causation_id, id); assert.equal(output.payload.page_title, 'Fixture product');
+    assert.ok(output); assert.equal(output.message_type, 'page.parsed'); assert.equal(output.schema_version, 1); assert.equal(output.organization_id, org); assert.equal(output.correlation_id, corr); assert.equal(output.causation_id, id); assert.equal(output.payload.page_title, 'Fixture product');
     fixture.sendToQueue('render.page.requested.v1', Buffer.from(JSON.stringify({ ...job, schema_version: 2 })));
     let rejected; for (let i = 0; i < 100; i++) { rejected = await fixture.get('render.page.requested.v1.dead', { noAck: true }); if (rejected) break; await new Promise(resolve => setTimeout(resolve, 50)); }
     assert.ok(rejected, 'unsupported version was not dead-lettered');
