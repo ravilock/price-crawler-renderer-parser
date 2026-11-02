@@ -1,6 +1,7 @@
 name: ${COMPOSE_PROJECT_NAME:-price-renderer-parser-local}
 services:
   rabbitmq:
+    networks: [default, renderer-isolated]
     image: rabbitmq:3.13-management-alpine
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:-price}
@@ -58,6 +59,7 @@ services:
         condition: service_healthy
     profiles: *id001
   app:
+    networks: [renderer-isolated]
     build:
       context: .
     environment:
@@ -107,3 +109,7 @@ volumes:
   mock-store-data: {}
   rabbit-data: {}
   crawler-data: {}
+
+networks:
+  renderer-isolated:
+    internal: true

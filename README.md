@@ -151,3 +151,10 @@ passed. The current test target contains no service behavior tests yet. Minimum
 dependencies passed real `docker compose up --wait` in isolated project `local-check-renderer-parser-c51b4646`,
 with host ports removed; normal shutdown retained its named volumes. This verifies
 dependency startup, not application, migration, demo or business-workflow readiness.
+
+The Compose app is attached only to an internal broker network: source HTTP
+requests must be fulfilled through the crawler's network-fetch boundary. The
+standalone host `make run` path does not provide this network isolation; use a
+host firewall or isolated network namespace that permits only RabbitMQ before
+running a browser worker. Route interception alone is not an egress firewall.
+The network-fetch consumer and browser worker are not yet connected.
