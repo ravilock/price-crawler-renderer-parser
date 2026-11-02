@@ -1,6 +1,7 @@
 import amqp from 'amqplib';
 import { setTimeout as delay } from 'node:timers/promises';
 import { healthServer } from './health.js';
+import { installRenderWorker } from './worker.js';
 
 function seconds(name, fallback) {
   const raw = process.env[name] ?? String(fallback);
@@ -42,14 +43,15 @@ async function run() {
       connection.on('error', () => {});
       const channel = await connection.createChannel();
       channel.on('error', () => {});
-      await channel.assertQueue(queue, { durable: true });
-      await channel.prefetch(1);
+      const identity = decodeURIComponent(new URL(url).username);
+      if (!identity) throw new Error('broker user identity required');
+      await installRenderWorker(connection, channel, queue, identity, controller.signal);
       if (controller.signal.aborted) { await connection.close(); break; }
       ready = true;
       connected = true;
       clearTimeout(startupTimer);
       backoff = initial;
-      console.log('renderer-parser transport ready; extraction handler is not configured');
+      console.log('renderer-parser transport and worker ready');
       await new Promise(resolve => {
         const finish = () => {
           connection.removeListener('close', finish);
